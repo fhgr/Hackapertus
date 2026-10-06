@@ -40,9 +40,7 @@ datasets/
 ├── transcripts/              transcripts.jsonl
 ├── feedback_examples/        feedback_examples.jsonl
 ├── docs/                     background and didactic documentation
-├── scripts/                  build, merge and validation scripts
-└── _parts/                   generator outputs (merged into the folders above) + the
-                              generation brief (AGENT_BRIEF.md) and the id roster (ROSTER.md)
+└── scripts/                  validation script (+ the original build scripts, for reference)
 ```
 
 Each data folder has its own `README.md` with purpose, examples and usage notes.
@@ -100,16 +98,14 @@ feedback_examples (F-xx) ── poor_feedback_violations ── feedback_guideli
 | **Synthetic**, LLM-generated from a fixed specification ([`SCHEMA.md`](SCHEMA.md), rubric, guidelines, FHGR examples as anchors) | all other answers, all annotations, translations, dialect variants, profiles, postings, scenarios, synthetic transcripts, feedback examples | `synthetic: true` |
 | **berufsberatung.ch** occupation data | [`occupations.csv`](occupations.csv), used for occupation ids, activities and requirements in postings and answers | `occupation_id` |
 
-Pipeline (reproducible from `_parts/`; `build_source_answers.py` needs the FHGR originals, which are not included in this repository, so its output is kept in `_parts/answers_src.jsonl` and `_parts/transcripts_src.jsonl`):
+The published files are the final, merged output of the generation pipeline. The intermediate generator outputs and the FHGR originals are not part of this repository, so the dataset cannot be rebuilt from here. To check the data (for example after your own changes), run the validator:
 
 ```bash
 cd datasets
-python3 scripts/build_questions.py        # German master question bank
-python3 scripts/build_rubric.py           # rubric + guideline rules
-# python3 scripts/build_source_answers.py # FHGR-derived answers & transcripts (needs source_material/)
-python3 scripts/merge_parts.py            # merge generator outputs, write STATS.md
-python3 scripts/validate.py               # schema + cross-reference + spelling checks
+python3 scripts/validate.py   # schema + cross-reference + spelling checks
 ```
+
+The other scripts in [`scripts/`](scripts/) (`build_questions.py`, `build_rubric.py`, `build_source_answers.py`, `merge_parts.py`) are kept for reference only. **Do not run them:** they write directly into the published files, and most of them depend on inputs that are not included here.
 
 ## Limitations
 
